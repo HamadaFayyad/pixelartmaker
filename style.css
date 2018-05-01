@@ -140,6 +140,28 @@ ul{list-style-type: none}
     border-top: 0;
     background-color: #0B1126
 }
+
+.custom-popup
+{
+    background-color: #E6194B;
+    position: absolute;
+    left: -10%;
+    top: 0;
+    height: 105%;
+    width: 120%;
+    display: none
+}
+
+.custom-popup .outer-wrapper
+{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    padding: 5px
+}
+
+.custom-popup .outer-wrapper .center-wrapper{flex-basis: 100%; padding: 10px}
 /*-----------------------------------------------------
                 # End Global Rules
 -----------------------------------------------------*/
@@ -242,8 +264,6 @@ ul{list-style-type: none}
 
 .main-color .col2 .color:last-child{background-color: #0082C8}
 
-.custom{min-height: 275px}
-
 .custom .flex-box .btn
 {
     flex-basis: 100px;
@@ -252,7 +272,7 @@ ul{list-style-type: none}
     padding: 10px 0
 }
 
-.custom #customGrid
+/* .custom #customGrid
 {
     background-color: #E6194B;
     position: absolute;
@@ -272,7 +292,7 @@ ul{list-style-type: none}
     padding: 5px
 }
 
-.custom #customGrid .outer-wrapper .center-wrapper{flex-basis: 100%; padding: 10px}
+.custom #customGrid .outer-wrapper .center-wrapper{flex-basis: 100%; padding: 10px} */
 
 .custom #customGrid .wrapper{margin-bottom: 15px}
 
@@ -312,6 +332,29 @@ ul{list-style-type: none}
     margin: 0 auto 20px;
     height: 40px;
     width: 150px
+}
+
+/* .custom #customSize{display: flex} */
+
+.custom #customSize .outer-wrapper{width: 100%}
+
+.custom #customSize .outer-wrapper .center-wrapper{display: flex; flex-flow: row wrap}
+
+.custom #customSize .btn
+{
+    font-size: 70%;
+    text-transform: capitalize;
+    padding: 5px 8px;
+    min-height: 38px;
+    width: 85px
+}
+
+.custom #customSize .btn{margin-bottom: 15px}
+
+.custom #customSize .btn:nth-child(7),
+.custom #customSize .btn:last-child
+{
+    margin-bottom: 0
 }
 /*-----------------------------------------------------
                 # End Stting Rules
@@ -417,9 +460,9 @@ table
 
 tr, td{border: 1px solid #0B1126}
 
-table > tr{height: 20px}
+/* table > tr{height: 20px}
 
-table > tr > td{width: 20px}
+table > tr > td{width: 20px} */
 /*-----------------------------------------------------
                 # End Grid Rules
 -----------------------------------------------------*/
@@ -496,4 +539,3 @@ table > tr > td{width: 20px}
 /*-----------------------------------------------------
                 # End Mobile version
 -----------------------------------------------------*/
-
