@@ -1,17 +1,21 @@
 $(document).ready(function() {
 
-    const table = $("table");
+    const table = $("table"),
 
-    let grBackground, cell, drawing, getColor;
+        width = $("#get-width")
+        
+        height = $("#get-height");
+
+    let rows, cols, grBackground, cell, pixelSize, drawing, getColor;
 
     /** Make grid: This function creat based number of row and column that users enters */
     function makeGrid() {
 
-        const rows = $("#get-height").val(),
+        rows = height.val(),
         
-            cols = $("#get-width").val(),
+        cols = width.val();
 
-            grBackground = $("#grBackground").val();
+        grBackground = $("#grBackground").val();
 
         table.children().remove(); // TODO : Remove the table if it is already created when creating new table.
         
@@ -27,27 +31,60 @@ $(document).ready(function() {
             $(".table-row").append("<td class='cell'></td>");
         }
 
+        /** Set pixels size based the number of rows and columns that user enters to still a square*/
+        pixelSize = function() {
+
+            if (rows <= 40 && cols <= 40) {
+  
+                $(".table-row").css("height", "20px");
+  
+                $(".cell").css("width", "20px");
+  
+            } else if (rows <= 65 && cols <= 65) {
+  
+                $(".table-row").css("height", "15px");
+  
+                $(".cell").css("width", "15px");
+  
+            } else {
+  
+                $(".table-row").css("height", "10px");
+  
+                $(".cell").css("width", "10px");
+            }
+  
+          };
+          pixelSize();
+
         table.css("background-color", grBackground); // TODO : Set table default background.
+
+        table.css("border-color", $("#outerBorder").val()); // TODO : Set grid default outer border color.
+      
+        table.css("border-width", $("#borderWeight").val()); // TODO : Set grid default outer border weight.
 
         /** Paint the cell based the color that user chooses form color picker */
         drawing = function draw() {
 
+            let mouseOnDown = false; // TODO : Check if the mouse is clicked down or not.
+
             cell = $(".cell"); // TODO : Define cell variable.
 
-            let mouseOnDown = false; // TODO : Check if the mouse is clicked down or not.
+            cell.click( function() {
+
+                getColor = $("#grColor").val();
+            
+                $(this).css("background-color", getColor); // TODO : Draw cell by cell.
+            
+            });
 
             cell.on("mousemove", function() {
 
-                if(mouseOnDown) { // TODO : Draw constantly if the mouse status clickdown.
+                // TODO : Draw constantly if the mouse status clickdown.
+                if(mouseOnDown) {
 
                     getColor = $("#grColor").val(); // TODO : Define getColor variable.
 
                     $(this).css("background-color", getColor);
-
-                    document.querySelector(".grid").oncontextmenu = function(e) {
-
-                        e.preventDefault();
-                    };
                     
                 }
             });
@@ -62,14 +99,10 @@ $(document).ready(function() {
                 mouseOnDown = false; // TODO : Make the mouse status false when the mouse clicked up.
             });
 
-            cell.click( function() {
-            
-                $(this).css("background-color", getColor); // TODO : Draw cell by cell.
-            
-            });
-
         };
         drawing();
+
+        $(".grid").contextmenu(function(){ return false;}); // TODO : Prevent menu when right click on the grid.
 
     }
 
@@ -86,24 +119,26 @@ $(document).ready(function() {
 
         e.preventDefault(); // TODO : Prevent page reload when you submit the form. 
         
-        
-        if (cols >= 121) { // TODO : Set columns limit number.
+        // TODO : Set columns limit number.
+        if (cols >= 101) {
 
             widthTooltip.fadeIn();
 
             widthTooltip.css("border-color", "#ff0000");
 
-            widthTooltip.text("Max width 120 colums");
+            widthTooltip.text("Max width 100 colums");
 
-        } else if (rows >= 121) { // TODO : Set Rows limit number.
+          // TODO : Set Rows limit number.
+        } else if (rows >= 101) {
 
             heightTooltip.fadeIn();
 
             heightTooltip.css("border-color", "#ff0000");
 
-            heightTooltip.text("Max height 120 rows");
+            heightTooltip.text("Max height 100 rows");
 
-        } else if (cols < 0) { // TODO : Prevent users to enter columns negative numbers.
+          // TODO : Prevent users to enter columns negative numbers.
+        } else if (cols < 0) {
 
             widthTooltip.fadeIn();
 
@@ -111,15 +146,17 @@ $(document).ready(function() {
 
             widthTooltip.text("Enter positive value");
 
-        } else if (rows < 0) { // TODO : Prevent users to enter Rows negative numbers.
+          // TODO : Prevent users to enter Rows negative numbers.
+        } else if (rows < 0) {
 
             heightTooltip.fadeIn();
 
             heightTooltip.css("border-color", "#ff0000");
 
             heightTooltip.text("Enter positive value");
-
-        } else { // TODO : If the number of columns and row between 1 and 120 and not negative execute make grid function.
+          
+          // TODO : If the number of columns and row between 1 and 100 and not negative execute make grid function.
+        } else {
 
             $(".gr-features").css("display", "flex");
 
@@ -133,7 +170,7 @@ $(document).ready(function() {
 
     });
 
-    // TODO :** Reset app : Clear table, reset width, height and color fields.
+   /** Reset app : Clear table, reset width, height and color fields */
     $(".reset-app").click(function() {
 
         table.children().remove(); // TODO : Remove table.
@@ -256,6 +293,150 @@ $(document).ready(function() {
         
                 $("tr, td").css("border-color", innerGrid); // TODO : Change inner grid color.
             });
+        });
+
+    });
+
+    /** Custom Size : Add/Remove row/column at the first, Add/Remove row/column at the last */
+    $(".open-custom-size").click(function() {
+
+        $("#customSize").fadeIn(); // TODO : Open custom size feature when the user click custom size button.
+
+        $(".close").click(function() {
+
+            $("#customSize").fadeOut(); // TODO : Close costom size features when clicking close button.
+        });
+
+        /** Add row at the top */
+        $(".add-row-top").click(function() {
+
+            let tableRow = table.children();
+
+            if (tableRow.length < 100) {
+
+                height.val(++rows);
+
+                table.prepend("<tr class='table-row'></tr>");
+
+                for (let r = 1; r <= cols; r++) {
+
+                    table.children().first().append("<td class='cell'></td>");
+                }
+                
+                pixelSize();
+            }
+
+            drawing();
+        });
+
+        /** Add row at the bottom */
+        $(".add-row-bottom").click(function() {
+
+            let tableRow = table.children();
+
+            if (tableRow.length < 100) {
+
+                height.val(++rows);
+
+                table.append("<tr class='table-row'></tr>");
+
+                for (let r = 1; r <= cols; r++) {
+
+                    table.children().last().append("<td class='cell'></td>");
+                }
+
+                pixelSize();
+            }
+
+            drawing();
+        });
+
+        /** Remove row from the top */
+        $(".remove-row-top").click(function() {
+
+            height.val(--rows);
+
+            table.children().first().remove();
+
+            pixelSize();
+        });
+
+        /** Remove row from the bottom */
+        $(".remove-row-bottom").click(function() {
+
+            height.val(--rows);
+
+            table.children().last().remove();
+
+            pixelSize();
+        });
+
+        /** Add column at the first */
+        $(".add-col-first").click(function(){
+
+            let firstRow = table.children().first().children();
+            
+            // TODO : Add new column at the first if the number of column less than 100 column.
+            if(firstRow.length < 100){
+                
+                width.val(++cols);
+
+                $(".table-row").each(function() {
+
+                    $(this).children().first().before("<td class='cell'></td>");
+                });
+
+                pixelSize();
+            }
+            
+            drawing();
+        });
+
+        /** Add column at the first */
+        $(".add-col-last").click(function(){
+
+            let firstRow = table.children().first().children();
+            
+            // TODO : Add new column at the last if the number of column less than 100 column.
+            if(firstRow.length < 100){
+    
+                width.val(++cols);
+
+                $(".table-row").each(function() {
+
+                    $(this).append("<td class='cell'></td>");
+                });
+
+                pixelSize();
+            }
+
+            drawing();
+        });
+
+        /** Remove column from the first */
+        $(".remove-col-first").click(function(){
+            
+            width.val(--cols);
+
+            $(".table-row").each(function() {
+    
+                $(this).children().first().remove();
+            });
+
+            pixelSize();
+        });
+
+        /** Remove column from the last */
+        $(".remove-col-last").click(function(){
+            
+            width.val(--cols);
+
+            $(".table-row").each(function() {
+    
+                $(this).children().last().remove();
+            });
+
+            pixelSize();
         });
 
     });
